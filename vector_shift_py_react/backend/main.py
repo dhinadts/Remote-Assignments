@@ -1,37 +1,37 @@
-""" from fastapi import FastAPI, Form
-
-app = FastAPI()
-
-@app.get('/')
-def read_root():
-    return {'Ping': 'Pong'}
-
-@app.get('/pipelines/parse')
-def parse_pipeline(pipeline: str = Form(...)):
-    return {'status': 'parsed'}
- """
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
 import networkx as nx
+import os
 
-app = FastAPI()
+# -------------------------
+# App Initialization
+# -------------------------
+app = FastAPI(
+    title="VectorShift Backend API",
+    description="Backend for VectorShift-style pipeline validation",
+    version="1.0.0",
+)
 
-# Configure CORS for Render deployment
+# -------------------------
+# CORS Configuration
+# -------------------------
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",  # Local development
-        "https://your-frontend-domain.vercel.app",  # Your frontend domain
-        "*"  # For testing only - restrict in production
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "*"
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Data models
+# -------------------------
+# Data Models
+# -------------------------
 class Position(BaseModel):
     x: float
     y: float
@@ -58,90 +58,102 @@ class PipelineRequest(BaseModel):
     nodes: List[Node]
     edges: List[Edge]
 
+class NodeHealth(BaseModel):
+    node_id: str
+    healthy: bool
+    reason: str
+
 class PipelineResponse(BaseModel):
     num_nodes: int
     num_edges: int
     is_dag: bool
+    node_health: List[NodeHealth]
 
-def is_dag(nodes: List[Node], edges: List[Edge]) -> bool:
-    """
-    Check if the pipeline forms a Directed Acyclic Graph (DAG)
-    """
-    try:
-        graph = nx.DiGraph()
-        
-        # Add nodes
-        for node in nodes:
-            graph.add_node(node.id)
-        
-        # Add edges
-        for edge in edges:
-            if edge.source in [n.id for n in nodes] and edge.target in [n.id for n in nodes]:
-                graph.add_edge(edge.source, edge.target)
-        
-        return nx.is_directed_acyclic_graph(graph)
-        
-    except Exception as e:
-        print(f"DAG check error: {e}")
-        return False
+# -------------------------
+# Helper Functions
+# -------------------------
+def check_dag(nodes: List[Node], edges: List[Edge]) -> bool:
+    graph = nx.DiGraph()
 
-@app.get('/')
-def read_root():
+    for node in nodes:
+        graph.add_node(node.id)
+
+    for edge in edges:
+        graph.add_edge(edge.source, edge.target)
+
+    return nx.is_directed_acyclic_graph(graph)
+
+def evaluate_node_health(
+    node: Node,
+    nodes: List[Node],
+    edges: List[Edge]
+) -> NodeHealth:
+    incoming = [e for e in edges if e.target == node.id]
+    outgoing = [e for e in edges if e.source == node.id]
+
+    if node.type not in ["base", "input"] and not incoming:
+        return NodeHealth(
+            node_id=node.id,
+            healthy=False,
+            reason="No incoming connections"
+        )
+
+    if node.type not in ["output"] and not outgoing:
+        return NodeHealth(
+            node_id=node.id,
+            healthy=False,
+            reason="No outgoing connections"
+        )
+
+    return NodeHealth(
+        node_id=node.id,
+        healthy=True,
+        reason="Node is healthy"
+    )
+
+# -------------------------
+# API Routes
+# -------------------------
+@app.get("/")
+def root():
     return {
-        'message': 'VectorShift Backend API',
-        'status': 'running',
-        'endpoints': {
-            'health': '/health',
-            'parse_pipeline': '/pipelines/parse (POST)',
-            'docs': '/docs',
-            'redoc': '/redoc'
-        }
+        "message": "VectorShift Backend API",
+        "status": "running"
     }
 
-@app.get('/health')
+@app.get("/health")
 def health_check():
     return {
-        'status': 'healthy',
-        'service': 'VectorShift Backend API',
-        'version': '1.0.0'
+        "status": "healthy"
     }
 
-@app.post('/pipelines/parse', response_model=PipelineResponse)
+@app.post("/pipelines/parse", response_model=PipelineResponse)
 def parse_pipeline(pipeline: PipelineRequest):
-    """
-    Parse pipeline data, count nodes/edges, and check if it's a DAG
-    """
-    try:
-        # Validate input
-        if not pipeline.nodes:
-            raise HTTPException(status_code=400, detail="No nodes provided")
-        
-        # Count nodes and edges
-        num_nodes = len(pipeline.nodes)
-        num_edges = len(pipeline.edges)
-        
-        # Check if it's a DAG
-        is_dag_result = is_dag(pipeline.nodes, pipeline.edges)
-        
-        return PipelineResponse(
-            num_nodes=num_nodes,
-            num_edges=num_edges,
-            is_dag=is_dag_result
-        )
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
+    if not pipeline.nodes:
+        raise HTTPException(status_code=400, detail="No nodes provided")
 
-# Optional: Test endpoint
-@app.post('/test')
-def test_endpoint():
-    return {
-        'test': 'success',
-        'message': 'Backend is working correctly'
-    }
+    num_nodes = len(pipeline.nodes)
+    num_edges = len(pipeline.edges)
 
+    dag_result = check_dag(pipeline.nodes, pipeline.edges)
+
+    node_health = [
+        evaluate_node_health(node, pipeline.nodes, pipeline.edges)
+        for node in pipeline.nodes
+    ]
+
+    return PipelineResponse(
+        num_nodes=num_nodes,
+        num_edges=num_edges,
+        is_dag=dag_result,
+        node_health=node_health
+    )
+
+# -------------------------
+# Local / Render Entry Point
+# -------------------------
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
