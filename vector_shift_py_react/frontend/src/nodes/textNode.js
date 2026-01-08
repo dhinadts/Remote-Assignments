@@ -1,81 +1,78 @@
-import React, { useState, useEffect, useRef } from 'react';
-import BaseNode from '../components/BaseNode';
+// TextNode.js - Refactored using BaseNode abstraction
 
-const TextNode = ({ id, data }) => {
-  const [text, setText] = useState(data?.text || 'Hello {{name}}!');
-  const textareaRef = useRef(null);
-  
-  // Extract variables from text like {{variable}}
-  const extractVariables = (text) => {
-    const regex = /\{\{\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\}\}/g;
-    const matches = [];
-    let match;
-    while ((match = regex.exec(text)) !== null) {
-      matches.push(match[1]);
-    }
-    return [...new Set(matches)]; // Remove duplicates
+import { useState } from 'react';
+import { BaseNode, NodeField } from './BaseNode';
+
+export const TextNode = ({ id, data }) => {
+  const [currText, setCurrText] = useState(data?.text || '{{input}}');
+
+  const handleTextChange = (e) => {
+    setCurrText(e.target.value);
   };
-
-  // Auto-resize textarea
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  }, [text]);
-
-  const variables = extractVariables(text);
 
   return (
     <BaseNode
       id={id}
-      type="text"
+      data={data}
       title="Text Node"
-      inputs={variables.map(variable => ({ id: variable }))}
-      outputs={[{ id: 'output' }]}
-      style={{ minWidth: '250px' }}
+      type="Text"
+      icon="T"
+      inputs={[]}
+      outputs={[
+        { id: 'output', label: 'Text Output', color: '#3b82f6' }
+      ]}
+      width={220}
     >
-      <div>
-        <label style={{ fontSize: '12px', fontWeight: '500', color: '#4B5563', marginBottom: '4px' }}>
-          Text Content:
-        </label>
-        <textarea
-          ref={textareaRef}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          style={{
-            width: '100%',
-            minHeight: '40px',
-            padding: '8px',
-            border: '1px solid #D1D5DB',
-            borderRadius: '4px',
-            fontSize: '14px',
-            fontFamily: 'monospace',
-            resize: 'none',
-            overflow: 'hidden'
-          }}
-          placeholder="Enter text with {{variables}}..."
+      <NodeField label="Text Content">
+        <input 
+          type="text" 
+          value={currText} 
+          onChange={handleTextChange}
+          placeholder="Enter text or use {{variables}}"
+          className="text-input"
         />
-        
-        {variables.length > 0 && (
-          <div style={{ 
-            marginTop: '8px', 
-            padding: '4px 8px', 
-            backgroundColor: '#FEF3C7', 
-            borderRadius: '4px',
-            fontSize: '11px',
-            color: '#92400E'
-          }}>
-            <strong>Variables detected:</strong> {variables.join(', ')}
-            <div style={{ fontSize: '10px', marginTop: '2px' }}>
-              Each variable creates an input handle on the left
-            </div>
-          </div>
-        )}
+      </NodeField>
+      <div className="text-preview">
+        <small>Preview: {currText.length > 30 ? currText.substring(0, 30) + '...' : currText}</small>
       </div>
     </BaseNode>
   );
 };
 
-// nodes/textNode.js - Add at the end:
-export default TextNode;
+
+/* // textNode.js
+
+import { useState } from 'react';
+import { Handle, Position } from 'reactflow';
+
+export const TextNode = ({ id, data }) => {
+  const [currText, setCurrText] = useState(data?.text || '{{input}}');
+
+  const handleTextChange = (e) => {
+    setCurrText(e.target.value);
+  };
+
+  return (
+    <div style={{width: 200, height: 80, border: '1px solid black'}}>
+      <div>
+        <span>Text</span>
+      </div>
+      <div>
+        <label>
+          Text:
+          <input 
+            type="text" 
+            value={currText} 
+            onChange={handleTextChange} 
+          />
+        </label>
+      </div>
+      <Handle
+        type="source"
+        position={Position.Right}
+        id={`${id}-output`}
+      />
+    </div>
+  );
+}
+ */

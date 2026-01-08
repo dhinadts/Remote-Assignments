@@ -1,0 +1,253 @@
+/* nodes.css - Unified styling for all nodes */
+
+/* Base node styling */
+.node-base {
+  background: white;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  padding: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.node-base:hover {
+  border-color: #9ca3af;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.node-base.node-focused {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Node header */
+.node-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.node-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.node-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.node-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.node-type-badge {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.node-id {
+  font-size: 11px;
+  color: #9ca3af;
+  font-family: 'Monaco', 'Courier New', monospace;
+  background: #f9fafb;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Node content */
+.node-content {
+  font-size: 13px;
+  color: #374151;
+}
+
+/* Node sections */
+.node-section {
+  margin-bottom: 12px;
+}
+
+.node-section:last-child {
+  margin-bottom: 0;
+}
+
+.node-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.node-section-content {
+  padding: 4px 0;
+}
+
+/* Node fields */
+.node-field {
+  margin-bottom: 8px;
+}
+
+.node-field:last-child {
+  margin-bottom: 0;
+}
+
+.node-field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+
+.required-asterisk {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.node-field-input input,
+.node-field-input select,
+.node-field-input textarea {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+  background: white;
+}
+
+.node-field-input input:focus,
+.node-field-input select:focus,
+.node-field-input textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Type-specific node colors */
+.input-node {
+  border-left: 4px solid #8b5cf6;
+}
+
+.input-node .node-icon {
+  background: #8b5cf6;
+}
+
+.output-node {
+  border-left: 4px solid #10b981;
+}
+
+.output-node .node-icon {
+  background: #10b981;
+}
+
+.llm-node {
+  border-left: 4px solid #f59e0b;
+}
+
+.llm-node .node-icon {
+  background: #f59e0b;
+}
+
+.text-node {
+  border-left: 4px solid #3b82f6;
+}
+
+.text-node .node-icon {
+  background: #3b82f6;
+}
+
+.process-node {
+  border-left: 4px solid #ec4899;
+}
+
+.process-node .node-icon {
+  background: #ec4899;
+}
+
+.transform-node {
+  border-left: 4px solid #06b6d4;
+}
+
+.transform-node .node-icon {
+  background: #06b6d4;
+}
+
+.filter-node {
+  border-left: 4px solid #84cc16;
+}
+
+.filter-node .node-icon {
+  background: #84cc16;
+}
+
+.merge-node {
+  border-left: 4px solid #f97316;
+}
+
+.merge-node .node-icon {
+  background: #f97316;
+}
+
+.split-node {
+  border-left: 4px solid #6366f1;
+}
+
+.split-node .node-icon {
+  background: #6366f1;
+}
+
+/* Status indicators */
+.node-status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.node-status-idle {
+  background: #9ca3af;
+}
+
+.node-status-processing {
+  background: #f59e0b;
+  animation: pulse 2s infinite;
+}
+
+.node-status-success {
+  background: #10b981;
+}
+
+.node-status-error {
+  background: #ef4444;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

@@ -1,47 +1,77 @@
 // components/Toolbar.js
-import React from 'react';
-import './Toolbar.css';
+import React from "react";
+import "../styles/Toolbar.css";
+import { toast } from "react-toastify";
 
-const NODE_TYPES = [
-  { type: 'input', label: 'Input', color: '#3B82F6' },
-  { type: 'output', label: 'Output', color: '#10B981' },
-  { type: 'llm', label: 'LLM', color: '#8B5CF6' },
-  { type: 'text', label: 'Text', color: '#F59E0B' },
-  { type: 'conditional', label: 'Conditional', color: '#EC4899' },
-  { type: 'api', label: 'API Call', color: '#06B6D4' },
-  { type: 'transform', label: 'Transform', color: '#F97316' },
-  { type: 'delay', label: 'Delay', color: '#84CC16' },
-  { type: 'merge', label: 'Merge', color: '#8B5CF6' }
-];
-
-const Toolbar = ({ onAddNode }) => {
-  const handleDragStart = (event, nodeType) => {
-    event.dataTransfer.setData('application/node-type', nodeType);
-  };
-
+const Toolbar = ({
+  pipelineName,
+  onNameChange,
+  onSave,
+  onExecute,
+  isEditing,
+  onToggleEdit,
+}) => {
   return (
     <div className="toolbar">
-      <h3>📦 Node Palette</h3>
-      <p>Drag nodes to canvas</p>
-      
-      <div className="node-list">
-        {NODE_TYPES.map((node) => (
-          <div
-            key={node.type}
-            className="node-item"
-            draggable
-            onDragStart={(e) => handleDragStart(e, node.type)}
-            style={{ borderLeftColor: node.color }}
-          >
-            <div className="node-color" style={{ backgroundColor: node.color }} />
-            <span>{node.label}</span>
-            <small>{node.type}</small>
+      <div className="toolbar-left">
+        <div className="brand">
+          <div className="brand-icon">⚡</div>
+          <h1 className="brand-title">Unified Pipeline</h1>
+        </div>
+
+        <div className="pipeline-info">
+          <input
+            type="text"
+            value={pipelineName}
+            onChange={(e) => onNameChange(e.target.value)}
+            className="pipeline-name"
+            placeholder="Pipeline name"
+          />
+          <div className="pipeline-status">
+            <span className="status-dot"></span>
+            <span className="status-text">Ready</span>
           </div>
-        ))}
+        </div>
+      </div>
+      <div className="toolbar-center">
+        <div className="mode-toggle">
+          <button
+            className={`mode-btn ${isEditing ? "active" : ""}`}
+            onClick={onToggleEdit}
+          >
+            {isEditing ? "Edit Mode" : "View Mode"}
+          </button>
+        </div>
+      </div>
+      // Add to Toolbar.js, inside the toolbar-right section:
+      <div className="toolbar-right">
+        <button
+          className="btn btn-icon"
+          onClick={() => {
+            // You could add a default node or show a modal
+            toast.info("Click on node types below to add");
+          }}
+          title="Add Node"
+        >
+          <span className="btn-icon">➕</span>
+        </button>
+
+        <button className="btn btn-secondary" onClick={onSave}>
+          <span className="btn-icon">💾</span>
+          Save
+        </button>
+
+        <button className="btn btn-primary" onClick={onExecute}>
+          <span className="btn-icon">🚀</span>
+          Execute
+        </button>
+
+        <button className="btn btn-icon">
+          <span className="btn-icon">⚙️</span>
+        </button>
       </div>
     </div>
   );
 };
 
-// ADD THIS LINE:
-export default Toolbar;  // <-- Default export
+export default Toolbar;
