@@ -26,25 +26,6 @@ Vector **Shcif** is a visual, node-based pipeline editor inspired by tools like 
 
 ---
 
-## 📁 Project Structure
-
-```
-src/
-├── components/
-│   ├── FlowCanvas.jsx        # Main React Flow canvas
-│   ├── NodePanel.js          # Draggable node palette
-│   ├── draggableNode.js      # Node drag helpers
-│   └── NodePanel.css         # Node panel styling
-├── services/
-│   └── api.js                # Pipeline parsing API
-├── styles/
-│   └── global.css
-├── App.js
-└── index.js
-```
-
----
-
 ## 🚀 Getting Started
 
 ### 1️⃣ Install Dependencies
@@ -145,6 +126,8 @@ Contributions are welcome!
 This project is licensed under the MIT License.
 
 ---
+# Deployed in Vercel
+
 
 ## 👨‍💻 Author
 
