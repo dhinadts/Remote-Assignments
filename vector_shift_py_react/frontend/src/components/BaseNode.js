@@ -1,8 +1,6 @@
-// BaseNode.js - Abstract base component for all nodes
-
-import { Handle, Position } from 'reactflow';
-import { useState } from 'react';
-import '../styles/BaseNode.css';
+import { Handle, Position } from "reactflow";
+import { useState } from "react";
+import "../styles/BaseNode.css";
 
 export const BaseNode = ({
   id,
@@ -14,40 +12,40 @@ export const BaseNode = ({
   outputs = [],
   children,
   width = 200,
-  height = 'auto',
+  height = "auto",
   minHeight = 80,
-  className = '',
-  onDataChange = null
+  className = "",
+  onDataChange = null,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  // Calculate handle positions for inputs
   const getInputPosition = (index, total) => {
-    if (total <= 1) return '50%';
+    if (total <= 1) return "50%";
     return `${((index + 1) * 100) / (total + 1)}%`;
   };
 
-  // Calculate handle positions for outputs
   const getOutputPosition = (index, total) => {
-    if (total <= 1) return '50%';
+    if (total <= 1) return "50%";
     return `${((index + 1) * 100) / (total + 1)}%`;
   };
 
   const handleStyle = {
     width: 10,
     height: 10,
-    background: '#3b82f6',
-    border: '2px solid white',
-    borderRadius: '50%'
+    background: "#3b82f6",
+    border: "2px solid white",
+    borderRadius: "50%",
   };
 
   return (
-    <div 
-      className={`node-base ${type}-node ${className} ${isFocused ? 'node-focused' : ''}`}
-      style={{ 
+    <div
+      className={`node-base ${type}-node ${className} ${
+        isFocused ? "node-focused" : ""
+      }`}
+      style={{
         width: width,
         height: height,
-        minHeight: minHeight
+        minHeight: minHeight,
       }}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
@@ -60,10 +58,10 @@ export const BaseNode = ({
           type="target"
           position={Position.Left}
           id={`${id}-${input.id}`}
-          style={{ 
+          style={{
             top: getInputPosition(index, inputs.length),
             ...handleStyle,
-            background: input.color || '#3b82f6'
+            background: input.color || "#3b82f6",
           }}
           title={input.label || input.id}
         />
@@ -76,13 +74,11 @@ export const BaseNode = ({
           <h3 className="node-title">{title}</h3>
           <span className="node-type-badge">{type}</span>
         </div>
-        <div className="node-id">#{id.split('-')[1] || id}</div>
+        <div className="node-id">#{id.split("-")[1] || id}</div>
       </div>
 
       {/* Node Content */}
-      <div className="node-content">
-        {children}
-      </div>
+      <div className="node-content">{children}</div>
 
       {/* Output Handles */}
       {outputs.map((output, index) => (
@@ -91,10 +87,10 @@ export const BaseNode = ({
           type="source"
           position={Position.Right}
           id={`${id}-${output.id}`}
-          style={{ 
+          style={{
             top: getOutputPosition(index, outputs.length),
             ...handleStyle,
-            background: output.color || '#10b981'
+            background: output.color || "#10b981",
           }}
           title={output.label || output.id}
         />
@@ -103,8 +99,7 @@ export const BaseNode = ({
   );
 };
 
-// Helper components
-export const NodeSection = ({ title, children, className = '' }) => (
+export const NodeSection = ({ title, children, className = "" }) => (
   <div className={`node-section ${className}`}>
     {title && <div className="node-section-title">{title}</div>}
     <div className="node-section-content">{children}</div>
@@ -117,8 +112,6 @@ export const NodeField = ({ label, children, required = false }) => (
       {label}
       {required && <span className="required-asterisk">*</span>}
     </label>
-    <div className="node-field-input">
-      {children}
-    </div>
+    <div className="node-field-input">{children}</div>
   </div>
 );

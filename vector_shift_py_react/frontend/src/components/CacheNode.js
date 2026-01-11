@@ -1,12 +1,10 @@
-// CacheNode.js - New node type: Data Caching
-
 import { useState } from 'react';
 import { BaseNode, NodeField, NodeSection } from './BaseNode';
 import '../styles/BaseNode.css';
 
 export const CacheNode = ({ id, data }) => {
   const [cacheStrategy, setCacheStrategy] = useState(data?.cacheStrategy || 'memory');
-  const [ttl, setTtl] = useState(data?.ttl || 300); // 5 minutes in seconds
+  const [ttl, setTtl] = useState(data?.ttl || 300); 
   const [maxSize, setMaxSize] = useState(data?.maxSize || 1000);
 
   return (

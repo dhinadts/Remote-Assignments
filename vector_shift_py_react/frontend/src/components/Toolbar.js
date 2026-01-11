@@ -1,4 +1,3 @@
-// components/Toolbar.js
 import React from "react";
 import "../styles/Toolbar.css";
 import { toast } from "react-toastify";

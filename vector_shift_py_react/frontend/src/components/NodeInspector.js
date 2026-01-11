@@ -1,4 +1,3 @@
-// components/NodeInspector.js - Complete Version
 import React, { useState, useEffect } from 'react';
 import '../styles/NodeInspector.css';
 

@@ -1,5 +1,3 @@
-// TextNode.js - Refactored using BaseNode abstraction
-
 import { useState } from 'react';
 import { BaseNode, NodeField } from './BaseNode';
 

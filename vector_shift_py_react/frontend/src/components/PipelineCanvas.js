@@ -1,4 +1,3 @@
-// components/PipelineCanvas.js - Fixed drop handler
 import React, { useRef, useState } from 'react';
 import NodeComponent from './NodeComponent';
 import '../styles/PipelineCanvas.css';

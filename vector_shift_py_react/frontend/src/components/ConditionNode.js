@@ -1,5 +1,3 @@
-// ConditionNode.js - New node type: Conditional Logic
-
 import { useState } from 'react';
 import { BaseNode, NodeField, NodeSection } from './BaseNode';
 import '../styles/BaseNode.css';

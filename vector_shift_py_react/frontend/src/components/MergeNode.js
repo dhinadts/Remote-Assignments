@@ -1,5 +1,3 @@
-// MergeNode.js - New node type: Data Merge
-
 import { useState } from 'react';
 import { BaseNode, NodeField } from './BaseNode';
 import '../styles/BaseNode.css';

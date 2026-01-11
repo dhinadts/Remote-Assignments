@@ -1,18 +1,15 @@
-// App.js - Fixed Version
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-// Component Imports
 import Sidebar from './components/Sidebar';
 import PipelineCanvas from './components/PipelineCanvas';
-import NodePanel from './components/Nodepanel'; // Fixed import name
+import NodePanel from './components/Nodepanel'; 
 import NodeInspector from './components/NodeInspector';
 import Toolbar from './components/Toolbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { checkHealth } from './services/api';
 
-// Node Type Definitions
 const NODE_TYPES = {
   input: {
     name: 'Input',

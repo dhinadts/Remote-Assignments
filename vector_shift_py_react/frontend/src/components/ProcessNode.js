@@ -1,5 +1,3 @@
-// ProcessNode.js - New node type: Data Processing
-
 import { useState } from 'react';
 import { BaseNode, NodeField, NodeSection } from './BaseNode';
 import '../styles/BaseNode.css';

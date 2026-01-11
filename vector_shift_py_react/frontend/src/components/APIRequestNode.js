@@ -1,12 +1,10 @@
-// APIRequestNode.js - New node type: API Integration
-
 import { useState } from 'react';
 import { BaseNode, NodeField, NodeSection } from './BaseNode';
 import  '../styles/BaseNode.css';
 
 export const APIRequestNode = ({ id, data }) => {
   const [method, setMethod] = useState(data?.method || 'GET');
-  const [url, setUrl] = useState(data?.url || 'https://api.example.com');
+  const [url, setUrl] = useState(data?.url || `const API_BASE_URL = "https://remote-assignments-vector-backend.onrender.com"`);
   const [headers, setHeaders] = useState(data?.headers || '{}');
   const [timeout, setTimeout] = useState(data?.timeout || 30);
 
@@ -47,7 +45,7 @@ export const APIRequestNode = ({ id, data }) => {
           type="text" 
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://api.example.com/endpoint"
+          
         />
       </NodeField>
       

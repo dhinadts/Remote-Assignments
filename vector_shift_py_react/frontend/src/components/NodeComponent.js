@@ -1,4 +1,3 @@
-// components/NodeComponent.js - Simplified drag
 import React, { useState } from 'react';
 import '../styles/NodeComponent.css';
 

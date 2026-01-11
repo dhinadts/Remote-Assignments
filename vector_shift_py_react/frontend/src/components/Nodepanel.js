@@ -1,4 +1,3 @@
-// components/NodePanel.js - Updated with proper drag handling
 import React from 'react';
 import '../styles/Nodepanel.css';
 

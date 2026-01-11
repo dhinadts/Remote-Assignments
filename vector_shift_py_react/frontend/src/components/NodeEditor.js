@@ -7,7 +7,7 @@ import ReactFlow, {
   applyNodeChanges,
   applyEdgeChanges,
 } from "reactflow";
-import "reactflow/dist/style.css"; // IMPORTANT: Add this CSS import
+import "reactflow/dist/style.css"; 
 import { parsePipeline } from "../services/api";
 import { toast } from "react-toastify";
 

@@ -1,12 +1,10 @@
-// components/Sidebar.js - Corrected Version
 import React from 'react';
-import '../styles/Sidebar.css';  // Make sure this CSS file exists
-
+import '../styles/Sidebar.css';  
 const Sidebar = ({ activeCategory, onCategoryChange, categories }) => {
   const handleDocumentationClick = (e) => {
     e.preventDefault();
     // Open documentation in new tab or show modal
-    window.open('https://docs.example.com', '_blank');
+    // window.open('https://docs.example.com', '_blank');  // example code
   };
 
   return (

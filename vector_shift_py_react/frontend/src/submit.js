@@ -1,4 +1,3 @@
-// submit.js
 
 export const SubmitButton = () => {
 
