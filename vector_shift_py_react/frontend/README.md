@@ -1,4 +1,4 @@
-# Vector Shcif
+# Vector Shift
 
 Vector **Shcif** is a visual, node-based pipeline editor inspired by tools like VectorShift. It is built using **React** and **React Flow**, allowing users to drag, drop, connect, and validate nodes to design execution pipelines visually.
 
@@ -49,7 +49,7 @@ http://localhost:3000
 
 ## 🧲 Drag & Drop Implementation
 
-Vector Shcif uses React Flow's **external drag-and-drop** mechanism.
+Vector Shift uses React Flow's **external drag-and-drop** mechanism.
 
 ### Key Concepts
 
@@ -127,11 +127,14 @@ This project is licensed under the MIT License.
 
 ---
 # Deployed in Vercel
+```
+https://vector-shift-remote.vercel.app/
+```
 
 
 ## 👨‍💻 Author
 
-**Vector Shcif** is developed as an experimental visual pipeline editor using React Flow, inspired by modern AI workflow builders.
+**Vector Shift** is developed as an experimental visual pipeline editor using React Flow, inspired by modern AI workflow builders.
 
 ---
 
